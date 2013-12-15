@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkeletonBasics-WPF", "SkeletonBasics-WPF.csproj", "{8121846D-923E-4BB0-8647-30DA753D156E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestProject1", "TestProject1\TestProject1.vcxproj", "{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5782D69B-EB61-4A88-BBD9-D51A1C404464}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		SkeletonBasics-WPF.vsmdi = SkeletonBasics-WPF.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://kinectograph.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SkeletonBasics-WPF.csproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = TestProject1\\TestProject1.vcxproj
+		SccProjectName2 = TestProject1
+		SccLocalPath2 = TestProject1
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = SkeletonBasics-WPF.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8121846D-923E-4BB0-8647-30DA753D156E}.Release|Win32.ActiveCfg = Release|Any CPU
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Debug|Win32.Build.0 = Debug|Win32
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Release|Any CPU.ActiveCfg = Release|Win32
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Release|Win32.ActiveCfg = Release|Win32
+		{1F9B43AA-49BE-4D6C-8E7D-4800D1EAA1EE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
