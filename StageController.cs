@@ -19,19 +19,20 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         int SCALING_FACTOR_KCT_MIDI = 80;
         float HIGHT_OF_HANDS_OFFSET = (float)0.1;
         private float HEIGHT_VALUE_NORM_FACTOR = (float)1.5;
-        private float PERCUSSION_RADIUS = (float)0.45;
-        private int POS_HIST_LEN = 5;
+        public float PERCUSSION_RADIUS { get; set; }
+        private int POS_HIST_LEN = 3;
 
         // Zusätzliche Visualisierung in eigenem Fenster...
         Visualisation visualisation;
         
         List<SkeletonPoint> positionHistory;
         List<SkeletonPoint> positionHistory2;
-        private double HIGH_VEL_DIST = 0.1;
+        private double HIGH_VEL_DIST = 0.2;
         private bool freshHit;
         private bool freshHit2;
         private MainWindow mainWindow;
-        
+
+        private int callcount;
 
 
         public StageController(MainWindow newMainWindow)
@@ -41,6 +42,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
             freshHit = true;
             freshHit2 = true;
             mainWindow = newMainWindow;
+            PERCUSSION_RADIUS = (float)0.45;
+            callcount = 0;
             /*SkeletonPoint defaultPoint = new SkeletonPoint();
             defaultPoint.X = 0;
             defaultPoint.Y = 0;
@@ -54,16 +57,15 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         public override void SensorSkeletonFrameReady(Skeleton skeleton, DrawingContext dc)
         {
             processSkeleton(skeleton, dc);
+            callcount++;
+            System.Console.WriteLine(callcount);
         }
 
         // Daten werden verarbeitet und durch verschiedene Methoden ausgewertet.
         private void processSkeleton(Skeleton skeleton, DrawingContext dc)
         {
 
-           
-
            // dc.DrawEllipse(Brushes.Green, new Pen(Brushes.Green, 20), mainWindow.SkeletonPointToScreen(skeleton.Joints[JointType.ShoulderCenter].Position), 20,20);
-
 
             positionHistory.Add(skeleton.Joints[JointType.HandRight].Position);
             positionHistory2.Add(skeleton.Joints[JointType.HandLeft].Position);
@@ -89,9 +91,11 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                 visualisation.updateVisuals((int)newValues[2], (int)newValues[3], (int)newValues[1]);
             }
 
-            
-
-
+            //foreach (SkeletonPoint i in positionHistory)
+            //{
+            //    System.Console.Write((float)i.X + " ");
+            //}
+            //System.Console.WriteLine();
 
         }
 
@@ -164,6 +168,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         private bool isHighVelocity(SkeletonPoint currentPos, DrawingContext dc, List<SkeletonPoint> posHist)
         {
             bool isHigh = false;
+            //System.Console.WriteLine(Distance2D(currentPos.X, currentPos.Y, posHist[0].X, posHist[0].Y));
             if (Distance2D(currentPos.X, currentPos.Y, posHist[0].X, posHist[0].Y) > HIGH_VEL_DIST)
             {
                 isHigh = true;
@@ -172,6 +177,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                 //drawToScreen(dc, positionHistory[0].Y, 10);
                 //drawToScreen(dc, HIGH_VEL_DIST, 12);
             }
+            //System.Console.WriteLine(isHigh);
             return isHigh;
         }
 

@@ -275,8 +275,7 @@ using System.Collections.Generic;
 
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
-                            if(interpreterRunning)
-                                myStageController.SensorSkeletonFrameReady(skel, dc);
+                            callCallbackOfInterpreters(dc, skel);
                             this.DrawBonesAndJoints(skel, dc);
 
                         }
@@ -295,6 +294,12 @@ using System.Collections.Generic;
                 // prevent drawing outside of our render area
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
             }
+        }
+
+        private void callCallbackOfInterpreters(DrawingContext dc, Skeleton skel)
+        {
+            if (interpreterRunning)
+                myStageController.SensorSkeletonFrameReady(skel, dc);
         }
 
         /// <summary>
@@ -476,6 +481,12 @@ using System.Collections.Generic;
         {
             interpreterRunning = false;
 
+        }
+
+        private void percRadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(myStageController != null)
+            myStageController.PERCUSSION_RADIUS = (float)percRadiusSlider.Value;
         }
 
 
