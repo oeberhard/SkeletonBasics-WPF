@@ -20,14 +20,19 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         float HIGHT_OF_HANDS_OFFSET = (float)0.1;
         private float HEIGHT_VALUE_NORM_FACTOR = (float)1.5;
         public float PERCUSSION_RADIUS { get; set; }
-        private int POS_HIST_LEN = 3;
+        private int POS_HIST_LEN = 3; //3 good
+        private int POS_HIST2_LEN = 30;
 
         // Zusätzliche Visualisierung in eigenem Fenster...
         Visualisation visualisation;
+
+        List<float> horizontalDistHist;
         
         List<SkeletonPoint> positionHistory;
         List<SkeletonPoint> positionHistory2;
-        private double HIGH_VEL_DIST = 0.2;
+        List<SkeletonPoint> positionHistory3;
+        List<SkeletonPoint> positionHistory4;
+        private double HIGH_VEL_DIST = 0.12; // 0.15 good
         private bool freshHit;
         private bool freshHit2;
         private MainWindow mainWindow;
@@ -39,6 +44,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         {
             positionHistory = new List<SkeletonPoint>();
             positionHistory2 = new List<SkeletonPoint>();
+            positionHistory3 = new List<SkeletonPoint>();
+            positionHistory4 = new List<SkeletonPoint>();
             freshHit = true;
             freshHit2 = true;
             mainWindow = newMainWindow;
@@ -58,7 +65,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         {
             processSkeleton(skeleton, dc);
             callcount++;
-            System.Console.WriteLine(callcount);
+           // System.Console.WriteLine(callcount);
         }
 
         // Daten werden verarbeitet und durch verschiedene Methoden ausgewertet.
@@ -69,6 +76,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
 
             positionHistory.Add(skeleton.Joints[JointType.HandRight].Position);
             positionHistory2.Add(skeleton.Joints[JointType.HandLeft].Position);
+            positionHistory3.Add(skeleton.Joints[JointType.HandRight].Position);
+            positionHistory4.Add(skeleton.Joints[JointType.HandLeft].Position);
 
 
             ArrayList newValues = panAndHeightToMidiOutput(skeleton, dc);
@@ -83,6 +92,12 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                 newValues.AddRange(percussionToMidiOutput(skeleton, dc, skeleton.Joints[JointType.HandLeft], skeleton.Joints[JointType.ShoulderLeft], 4, ref positionHistory2, ref freshHit2));
                 positionHistory.RemoveAt(0);
                 positionHistory2.RemoveAt(0);
+            }
+
+            if (positionHistory3.Count == POS_HIST2_LEN)
+            {
+                positionHistory3.RemoveAt(0);
+                positionHistory4.RemoveAt(0);
             }
 
             // Zusätzliche Visualisierung in eigenem Fenster...
@@ -196,7 +211,23 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
             ArrayList newValues = new ArrayList();
 
             // Horizontale Distanz
-            double distanceHorizontal = Distance2D(rightHand.Position.X, rightHand.Position.Z, leftHand.Position.X, leftHand.Position.Z);
+            // Calculate average of previous positions to even out fast changes
+            double positionAverageR = 0;
+            double positionAverageL = 0;
+
+            if (positionHistory3.Count == POS_HIST2_LEN)
+            {
+                for (int i = 0; i < POS_HIST2_LEN; i++)
+                {
+                    positionAverageR += positionHistory3[i].X;
+                    positionAverageL += positionHistory4[i].X;
+                }
+
+                positionAverageR /= POS_HIST2_LEN;
+                positionAverageL /= POS_HIST2_LEN;
+            }
+
+            double distanceHorizontal = Math.Abs(positionAverageR - positionAverageL);
 
             int midiDistanceHorizontal = scaleDistanceOfHandsToMidiCC(distanceHorizontal, 0);
 
@@ -209,11 +240,31 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
 
 
             // Vertikale Distanz
-            double distanceVertical = Math.Abs(rightHand.Position.Y - leftHand.Position.Y);
+            positionAverageR = 0;
+            positionAverageL = 0;
+
+            if (positionHistory3.Count == POS_HIST2_LEN)
+            {
+                for (int i = 0; i < POS_HIST2_LEN; i++)
+                {
+                    positionAverageR += positionHistory3[i].Y;
+                    positionAverageL += positionHistory4[i].Y;
+                }
+
+                positionAverageR /= POS_HIST2_LEN;
+                positionAverageL /= POS_HIST2_LEN;
+            }
+
+
+
+            double distanceVertical = Math.Abs(positionAverageR - positionAverageL);
 
             int midiDistanceVertical = scaleDistanceOfHandsToMidiCC(distanceVertical, 10);
 
-            currentOutputDevice.SendControlChange(midiChannel, Midi.Control.Volume, midiDistanceVertical);
+            if(positionAverageR > positionAverageL)
+                currentOutputDevice.SendControlChange(midiChannel, Midi.Control.Volume, midiDistanceVertical);
+            else
+                currentOutputDevice.SendControlChange(midiChannel, (Midi.Control)8, midiDistanceVertical);
 
             drawToScreen(dc, midiDistanceVertical, 1);
 
